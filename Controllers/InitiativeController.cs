@@ -29,8 +29,6 @@ namespace TaskManager.Controllers
             var initiatives = _context.Initiatives.Include(i => i.Epics);
             var initiativesDto = _mapper.Map<List<InitiativeDto>>(initiatives);
 
-            _logger.LogInformation("log test");
-
             return Ok(initiativesDto);
         }
     }
