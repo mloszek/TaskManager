@@ -12,7 +12,7 @@ namespace TaskManager.Entities
         public DateTime? DateOfBirth { get; set; }
 
         public string PassHash { get; set; }
-        public int RoleId { get; set; }
+        public int RoleId { get; set; } = 1;
         public Role Role { get; set; }
 
     }
