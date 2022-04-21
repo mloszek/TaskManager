@@ -11,6 +11,6 @@ namespace TaskManager.Models
 
         public string Nationality { get; set; }
         public DateTime? DateOfBirth { get; set; }
-        public int RoleID { get; set; } = 1;
+        private int RoleID { get; set; }
     }
 }

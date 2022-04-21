@@ -51,6 +51,7 @@ namespace TaskManager
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddControllers().AddFluentValidation();
             services.AddScoped<IValidator<RegisterUserDto>, RegisterUserValidator>();
+            services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddDbContext<InitiativeContext>();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddSwaggerGen(c =>
