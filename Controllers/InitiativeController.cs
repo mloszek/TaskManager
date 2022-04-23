@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ namespace TaskManager.Controllers
 {
     [Route("api/initiative")]
     [ApiController]
+    [Authorize]
     public class InitiativeController : ControllerBase
     {
         private readonly InitiativeContext _context;
@@ -24,6 +26,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<List<Initiative>> Get()
         {
             var initiatives = _context.Initiatives.Include(i => i.Epics);
