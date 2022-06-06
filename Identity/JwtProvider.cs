@@ -8,7 +8,7 @@ using TaskManager.Entities;
 
 namespace TaskManager.Identity
 {
-    public class JwtProvider: IJwtProvider
+    public class JwtProvider : IJwtProvider
     {
         private readonly JwtOptions _jwtOptions;
 
@@ -25,8 +25,14 @@ namespace TaskManager.Identity
                 new Claim(ClaimTypes.Role, user.Role.RoleName),
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim("DateOfBirth", user.DateOfBirth.Value.ToString("dd-MM-yyyy")),
-                new Claim("Nationality", user.Nationality)
             };
+
+            if (!string.IsNullOrEmpty(user.Nationality))
+            {
+                claims.Add(
+                    new Claim("Nationality", user.Nationality)
+                    );
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.JwtKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

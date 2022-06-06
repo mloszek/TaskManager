@@ -26,13 +26,31 @@ namespace TaskManager.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Policy = "HasNationality")]
         public ActionResult<List<Initiative>> Get()
         {
             var initiatives = _context.Initiatives.Include(i => i.Epics);
             var initiativesDto = _mapper.Map<List<InitiativeDto>>(initiatives);
 
             return Ok(initiativesDto);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Moderator")]
+        public ActionResult Post([FromBody]InitiativeDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var initiative = _mapper.Map<Initiative>(model);
+            _context.Initiatives.Add(initiative);
+            _context.SaveChanges();
+
+            var key = initiative.Name.Replace(" ", "-").ToLower();
+            return Created("api/initiative/" + key, null);
         }
     }
 }
