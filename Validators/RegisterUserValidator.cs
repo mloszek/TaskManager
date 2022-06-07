@@ -35,6 +35,7 @@ namespace TaskManager.Validators
                     validationContext.AddFailure("Email", "This email address is already in use.");
                 }
             });
+            RuleFor(x => x.DateOfBirth).NotEmpty();
         }
     }
 }

@@ -136,6 +136,15 @@ namespace TaskManager.Tests.Validators
             result.ShouldHaveValidationErrorFor(user => user.ConfirmPassword);
         }
 
+        [Test]
+        public void ShouldHaveErrorsWhenDateOfBirthIsEmpty()
+        {
+            var model = CreateValidUserModel();
+            model.DateOfBirth = null;
+            var result = _validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(user => user.DateOfBirth);
+        }
+
         private RegisterUserDto CreateValidUserModel()
         {
             return new RegisterUserDto

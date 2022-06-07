@@ -36,8 +36,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Post([FromBody]InitiativeDto model)
         {
             if (!ModelState.IsValid)
@@ -45,7 +44,11 @@ namespace TaskManager.Controllers
                 return BadRequest(ModelState);
             }
 
-            var initiative = _mapper.Map<Initiative>(model);
+            var initiative = new Initiative
+            {
+                Name = model.Name,
+                Epics = model.Epics
+            };
             _context.Initiatives.Add(initiative);
             _context.SaveChanges();
 
