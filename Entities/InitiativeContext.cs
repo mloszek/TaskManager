@@ -14,6 +14,9 @@ namespace TaskManager.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Initiative>()
+                .HasOne(c => c.CreatedBy);
+
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Role);
 
