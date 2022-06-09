@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TaskManager.Authorization;
+using TaskManager.Controllers.Filters;
 using TaskManager.Entities;
 using TaskManager.Identity;
 using TaskManager.Models;
@@ -56,10 +57,11 @@ namespace TaskManager
                 options.AddPolicy("AtLeast18", builder => builder.AddRequirements(new MinimumAgeRequirement(18)));
             });
 
+            services.AddScoped<TimeTrackFilter>();
             services.AddScoped<IAuthorizationHandler, InitiativeResourceOperationHandler>();
             services.AddScoped<IAuthorizationHandler, MinimumAgeHandler>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-            services.AddControllers().AddFluentValidation();
+            services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter))).AddFluentValidation();
             services.AddScoped<IValidator<RegisterUserDto>, RegisterUserValidator>();
             services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddDbContext<InitiativeContext>();

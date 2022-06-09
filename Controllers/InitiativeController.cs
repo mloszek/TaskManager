@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TaskManager.Authorization;
+using TaskManager.Controllers.Filters;
 using TaskManager.Entities;
 using TaskManager.Models;
 
@@ -15,6 +16,7 @@ namespace TaskManager.Controllers
     [Route("api/initiative")]
     [ApiController]
     [Authorize]
+    [ServiceFilter(typeof(TimeTrackFilter))]
     public class InitiativeController : ControllerBase
     {
         private readonly InitiativeContext _context;
@@ -32,6 +34,8 @@ namespace TaskManager.Controllers
 
         [HttpGet]
         [Authorize(Policy = "HasNationality")]
+        [Authorize(Policy = "AtLeast18")]
+        [NationalityFilter("Chosen")]
         public ActionResult<List<Initiative>> Get()
         {
             var initiatives = _context.Initiatives.Include(i => i.Epics);
@@ -40,7 +44,7 @@ namespace TaskManager.Controllers
             return Ok(initiativesDto);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Post([FromBody] InitiativeDto model)
         {
@@ -94,7 +98,8 @@ namespace TaskManager.Controllers
             return NoContent();
         }
 
-        [HttpPut("{name}")]
+        [HttpDelete("{name}")]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Delete(string name)
         {
             var initiative = _context.Initiatives.FirstOrDefault(m => m.Name.Replace(" ", "-").ToLower() == name.ToLower());
