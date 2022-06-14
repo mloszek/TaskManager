@@ -70,10 +70,18 @@ namespace TaskManager
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskManager", Version = "v1" });
             });
+            services.AddCors(options =>
+            {
+                var portOfFrontendClient = 3000; //TODO
+                options.AddPolicy("FrontEndClient", 
+                    builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins($"http://localhost:{portOfFrontendClient}"));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseStaticFiles();
+            app.UseCors("FrontEndClient");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
