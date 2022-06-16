@@ -73,7 +73,7 @@ namespace TaskManager
             services.AddCors(options =>
             {
                 var portOfFrontendClient = 3000; //TODO
-                options.AddPolicy("FrontEndClient", 
+                options.AddPolicy("FrontEndClient",
                     builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins($"http://localhost:{portOfFrontendClient}"));
             });
         }
@@ -82,12 +82,12 @@ namespace TaskManager
         {
             app.UseStaticFiles();
             app.UseCors("FrontEndClient");
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskManager v1"));
-            }
+            //}
 
             app.UseAuthentication();
             app.UseHttpsRedirection();

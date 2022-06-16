@@ -17,9 +17,19 @@ namespace TaskManager.Authorization
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MinimumAgeRequirement requirement)
         {
-            var userEmail = context.User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
+            string userEmail;
+            DateTime dateOfBirth;
 
-            var dateOfBirth = DateTime.Parse(context.User.FindFirst(c => c.Type == "DateOfBirth").Value);
+            try
+            {
+                userEmail = context.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value;
+                dateOfBirth = DateTime.Parse(context.User.FindFirst(c => c.Type == "DateOfBirth").Value);
+            }
+            catch (NullReferenceException e)
+            {
+                _logger.LogError(e.Message);
+                return Task.CompletedTask;
+            }            
 
             _logger.LogInformation($"Handling minimum age requirement for {userEmail}. [date of birth: {dateOfBirth}]");
 

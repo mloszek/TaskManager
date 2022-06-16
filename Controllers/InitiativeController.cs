@@ -69,6 +69,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPut("{name}")]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Put(string name, [FromBody] InitiativeDto model)
         {
             var initiative = _context.Initiatives.FirstOrDefault(m => m.Name.Replace(" ", "-").ToLower() == name.ToLower());

@@ -10,7 +10,7 @@ namespace TaskManager.Entities
         public DbSet<Epic> Epics { get; set; }
         public DbSet<Task> Tasks { get; set; }
 
-        private const string _connection = "Server=(localdb)\\mssqllocaldb;Database=InitiativeDb;Trusted_Connection=True;";
+        private const string _connection = "Server=tcp:taskmanagerdbserver123.database.windows.net,1433;Initial Catalog=TaskManager_db;Persist Security Info=False;User ID=mloszek;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
