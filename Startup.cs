@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -64,7 +65,7 @@ namespace TaskManager
             services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter))).AddFluentValidation();
             services.AddScoped<IValidator<RegisterUserDto>, RegisterUserValidator>();
             services.AddScoped<IJwtProvider, JwtProvider>();
-            services.AddDbContext<InitiativeContext>();
+            services.AddDbContext<InitiativeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddSwaggerGen(c =>
             {
